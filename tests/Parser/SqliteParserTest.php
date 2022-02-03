@@ -1,4 +1,5 @@
 <?php
+
 namespace Aura\Sql\Parser;
 
 class SqliteParserTest extends AbstractParserTest

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aura\Sql\Parser;
 
 class PgsqlParserTest extends AbstractParserTest
@@ -15,7 +16,7 @@ class PgsqlParserTest extends AbstractParserTest
 SELECT U&"\a000"
 FROM (SELECT 1 AS U&":a000" UEScAPE ':') AS temp
 SQL;
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
     }
 
@@ -25,14 +26,14 @@ SQL;
         $sql = <<<SQL
 SELECT E'C-style escaping \' :foo \''
 SQL;
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
 
         $sql = <<<SQL
 SELECT E'Multiline'
        'C-style escaping \' :foo \' :foo'
 SQL;
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
     }
 
@@ -40,23 +41,23 @@ SQL;
     {
         $parameters = ['foo' => ['bar', 'baz']];
         $sql = 'SELECT $$:foo$$';
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
 
         $sql = 'SELECT $tag$ :foo $tag$';
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
 
         $sql = 'SELECT $outer$ nested strings $inner$:foo$inner$ $outer$';
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
 
         $sql = 'SELECT $€$hello$€$';
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
 
         $sql = 'SELECT $€$hello$€';
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
     }
 
@@ -66,7 +67,7 @@ SQL;
         $sql = <<<SQL
 SELECT 'hello'::TEXT
 SQL;
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
     }
 
@@ -79,7 +80,7 @@ FROM (
 SELECT CAST('{"foo", "bar", "baz", "qux"}' AS TEXT[]) AS test
 ) AS t
 SQL;
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
     }
 
@@ -89,7 +90,7 @@ SQL;
         $sql = <<<SQL
 SELECT 'hello':]
 SQL;
-        list ($statement, $values) = $this->rebuild($sql, $parameters);
+        list($statement, $values) = $this->rebuild($sql, $parameters);
         $this->assertEquals($sql, $statement);
     }
 }

@@ -1,11 +1,10 @@
 <?php
 /**
- *
  * This file is part of Aura for PHP.
  *
  * @license https://opensource.org/licenses/MIT MIT
- *
  */
+
 namespace Aura\Sql\Profiler;
 
 use Aura\Sql\Exception;
@@ -13,67 +12,52 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
- *
  * Sends query profiles to a logger.
- *
- * @package Aura.Sql
- *
  */
 class Profiler implements ProfilerInterface
 {
     /**
-     *
      * The current profile information.
      *
      * @var array
-     *
      */
     protected array $context = [];
 
     /**
-     *
      * Log profile data through this interface.
      *
      * @var LoggerInterface
-     *
      */
     protected LoggerInterface $logger;
 
     /**
-     *
      * Turns profile logging off and on.
      *
      * @var bool
      *
      * @see setActive()
-     *
      */
     protected bool $active = false;
 
     /**
-     *
      * The log level for all messages.
      *
      * @var string
      *
      * @see setLogLevel()
-     *
      */
     protected string $logLevel = LogLevel::DEBUG;
 
     /**
-     *
      * Sets the format for the log message, with placeholders.
      *
      * @var string
      *
      * @see setLogFormat()
-     *
      */
-    protected string $logFormat = "{function} ({duration} seconds): {statement} {backtrace}";
+    protected string $logFormat = '{function} ({duration} seconds): {statement} {backtrace}';
 
     /**
-     *
      * Constructor.
      *
      * @param \Psr\Log\LoggerInterface|null $logger Record profiles through this interface.
@@ -84,11 +68,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Enable or disable profiler logging.
      *
      * @param bool $active
-     *
      */
     public function setActive(bool $active)
     {
@@ -96,11 +78,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Returns true if logging is active.
      *
      * @return bool
-     *
      */
     public function isActive(): bool
     {
@@ -108,11 +88,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Returns the underlying logger instance.
      *
      * @return \Psr\Log\LoggerInterface
-     *
      */
     public function getLogger(): LoggerInterface
     {
@@ -120,11 +98,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Returns the level at which to log profile messages.
      *
      * @return string
-     *
      */
     public function getLogLevel(): string
     {
@@ -132,12 +108,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Level at which to log profile messages.
      *
      * @param string $logLevel A PSR LogLevel constant.
-     *
-     * @return void
      */
     public function setLogLevel(string $logLevel): void
     {
@@ -145,11 +118,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Returns the log message format string, with placeholders.
      *
      * @return string
-     *
      */
     public function getLogFormat(): string
     {
@@ -157,12 +128,9 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Sets the log message format string, with placeholders.
      *
      * @param string $logFormat
-     *
-     * @return void
      */
     public function setLogFormat(string $logFormat): void
     {
@@ -170,38 +138,31 @@ class Profiler implements ProfilerInterface
     }
 
     /**
-     *
      * Starts a profile entry.
      *
      * @param string $function The function starting the profile entry.
-     *
-     * @return void
      */
     public function start(string $function): void
     {
-        if (! $this->active) {
+        if (!$this->active) {
             return;
         }
 
         $this->context = [
             'function' => $function,
-            'start' => microtime(true),
+            'start'    => microtime(true),
         ];
     }
 
     /**
-     *
      * Finishes and logs a profile entry.
      *
      * @param string|null $statement The statement being profiled, if any.
-     *
-     * @param array $values The values bound to the statement, if any.
-     *
-     * @return void
+     * @param array       $values    The values bound to the statement, if any.
      */
     public function finish(?string $statement = null, array $values = []): void
     {
-        if (! $this->active) {
+        if (!$this->active) {
             return;
         }
 

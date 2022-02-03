@@ -1,44 +1,32 @@
 <?php
 /**
- *
  * This file is part of Aura for PHP.
  *
  * @license https://opensource.org/licenses/MIT MIT
- *
  */
+
 namespace Aura\Sql\Profiler;
 
 use Psr\Log\AbstractLogger;
 
 /**
- *
  * A naive memory-based logger.
- *
- * @package Aura.Sql
- *
  */
 class MemoryLogger extends AbstractLogger
 {
     /**
-     *
      * Log messages.
      *
      * @var array
-     *
      */
     protected array $messages = [];
 
     /**
-     *
      * Logs a message.
      *
-     * @param mixed $level The log level (ignored).
-     *
+     * @param mixed  $level   The log level (ignored).
      * @param string $message The log message.
-     *
-     * @param array $context Data to interpolate into the message.
-     *
-     * @return void
+     * @param array  $context Data to interpolate into the message.
      */
     public function log($level, $message, array $context = []): void
     {
@@ -50,11 +38,9 @@ class MemoryLogger extends AbstractLogger
     }
 
     /**
-     *
      * Returns the logged messages.
      *
      * @return array
-     *
      */
     public function getMessages(): array
     {

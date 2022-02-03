@@ -1,4 +1,5 @@
 <?php
+
 namespace Aura\Sql;
 
 class FakeObject

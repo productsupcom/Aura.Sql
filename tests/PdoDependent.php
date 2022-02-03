@@ -1,4 +1,5 @@
 <?php
+
 namespace Aura\Sql;
 
 use PDO;
@@ -15,6 +16,7 @@ class PdoDependent
         $stm = 'SELECT * FROM pdotest';
         $sth = $this->pdo->prepare($stm);
         $sth->execute();
+
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 }

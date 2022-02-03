@@ -1,11 +1,10 @@
 <?php
 /**
- *
  * This file is part of Aura for PHP.
  *
  * @license https://opensource.org/licenses/MIT MIT
- *
  */
+
 namespace Aura\Sql;
 
 use Aura\Sql\Profiler\Profiler;
@@ -13,25 +12,18 @@ use Aura\Sql\Profiler\ProfilerInterface;
 use PDO;
 
 /**
- *
  * Decorates an existing PDO instance with the extended methods.
- *
- * @package Aura.Sql
- *
  */
 class DecoratedPdo extends AbstractExtendedPdo
 {
     /**
-     *
      * Constructor.
      *
      * This overrides the parent so that it can take an existing PDO instance
      * and decorate it with the extended methods.
      *
-     * @param PDO $pdo An existing PDO instance to decorate.
-     *
+     * @param PDO                    $pdo      An existing PDO instance to decorate.
      * @param ProfilerInterface|null $profiler Tracks and logs query profiles.
-     *
      */
     public function __construct(PDO $pdo, ?ProfilerInterface $profiler = null)
     {
@@ -45,11 +37,7 @@ class DecoratedPdo extends AbstractExtendedPdo
     }
 
     /**
-     *
      * Connects to the database.
-     *
-     * @return void
-     *
      */
     public function connect(): void
     {
@@ -57,16 +45,14 @@ class DecoratedPdo extends AbstractExtendedPdo
     }
 
     /**
-     *
      * Disconnects from the database; disallowed with decorated PDO connections.
-     *
-     * @return void
      *
      * @throws Exception\CannotDisconnect
      */
     public function disconnect(): void
     {
-        $message = "Cannot disconnect a DecoratedPdo instance.";
+        $message = 'Cannot disconnect a DecoratedPdo instance.';
+
         throw new Exception\CannotDisconnect($message);
     }
 }

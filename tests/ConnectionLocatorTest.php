@@ -1,13 +1,12 @@
 <?php
+
 namespace Aura\Sql;
 
 use PHPUnit\Framework\TestCase;
 
 class ConnectionLocatorTest extends TestCase
 {
-    /**
-     * @var ConnectionLocator
-     */
+    /** @var ConnectionLocator */
     protected $locator;
 
     protected $conns;
@@ -22,31 +21,40 @@ class ConnectionLocatorTest extends TestCase
     {
         $this->conns = [
             'default' => new ExtendedPdo('sqlite::memory:'),
-            'read1' => new ExtendedPdo('sqlite::memory:'),
-            'read2' => new ExtendedPdo('sqlite::memory:'),
-            'read3' => new ExtendedPdo('sqlite::memory:'),
-            'write1' => new ExtendedPdo('sqlite::memory:'),
-            'write2' => new ExtendedPdo('sqlite::memory:'),
-            'write3' => new ExtendedPdo('sqlite::memory:'),
+            'read1'   => new ExtendedPdo('sqlite::memory:'),
+            'read2'   => new ExtendedPdo('sqlite::memory:'),
+            'read3'   => new ExtendedPdo('sqlite::memory:'),
+            'write1'  => new ExtendedPdo('sqlite::memory:'),
+            'write2'  => new ExtendedPdo('sqlite::memory:'),
+            'write3'  => new ExtendedPdo('sqlite::memory:'),
         ];
 
         $conns = $this->conns;
-        $this->default = function () use ($conns) { return $conns['default']; };
+        $this->default = function () use ($conns) {
+            return $conns['default'];
+        };
         $this->read = [
-            'read1' => function () use ($conns) { return $conns['read1']; },
-            'read2' => function () use ($conns) { return $conns['read2']; },
-            'read3' => function () use ($conns) { return $conns['read3']; },
+            'read1' => function () use ($conns) {
+                return $conns['read1'];
+            },
+            'read2' => function () use ($conns) {
+                return $conns['read2'];
+            },
+            'read3' => function () use ($conns) {
+                return $conns['read3'];
+            },
         ];
         $this->write = [
-            'write1' => function () use ($conns) { return $conns['write1']; },
-            'write2' => function () use ($conns) { return $conns['write2']; },
-            'write3' => function () use ($conns) { return $conns['write3']; },
+            'write1' => function () use ($conns) {
+                return $conns['write1'];
+            },
+            'write2' => function () use ($conns) {
+                return $conns['write2'];
+            },
+            'write3' => function () use ($conns) {
+                return $conns['write3'];
+            },
         ];
-    }
-
-    protected function newLocator($read = [], $write = [])
-    {
-        return new ConnectionLocator($this->default, $read, $write);
     }
 
     public function testNullDefault()
@@ -85,7 +93,7 @@ class ConnectionLocatorTest extends TestCase
         // try 10 times to make sure we get lots of random responses
         for ($i = 1; $i <= 10; $i++) {
             $actual = $locator->getRead();
-            $this->assertTrue(in_array($actual, $expect, true));
+            $this->assertTrue(\in_array($actual, $expect, true));
         }
     }
 
@@ -125,7 +133,7 @@ class ConnectionLocatorTest extends TestCase
         // try 10 times to make sure we get lots of random responses
         for ($i = 1; $i <= 10; $i++) {
             $actual = $locator->getWrite();
-            $this->assertTrue(in_array($actual, $expect, true));
+            $this->assertTrue(\in_array($actual, $expect, true));
         }
     }
 
@@ -142,5 +150,10 @@ class ConnectionLocatorTest extends TestCase
         $locator = $this->newLocator($this->read, $this->write);
         $this->expectException('Aura\Sql\Exception\ConnectionNotFound');
         $locator->getWrite('no-such-connection');
+    }
+
+    protected function newLocator($read = [], $write = [])
+    {
+        return new ConnectionLocator($this->default, $read, $write);
     }
 }

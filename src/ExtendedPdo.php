@@ -1,11 +1,10 @@
 <?php
 /**
- *
  * This file is part of Aura for PHP.
  *
  * @license https://opensource.org/licenses/MIT MIT
- *
  */
+
 namespace Aura\Sql;
 
 use Aura\Sql\Profiler\Profiler;
@@ -13,40 +12,28 @@ use Aura\Sql\Profiler\ProfilerInterface;
 use PDO;
 
 /**
- *
  * A lazy-connecting PDO with extended methods.
- *
- * @package Aura.Sql
- *
  */
 class ExtendedPdo extends AbstractExtendedPdo
 {
     /**
-     *
      * Constructor arguments for instantiating the PDO connection.
      *
      * @var array
-     *
      */
     protected array $args = [];
 
     /**
-     *
      * Constructor.
      *
      * This overrides the parent so that it can take connection attributes as a
      * constructor parameter, and set them after connection.
      *
-     * @param string $dsn The data source name for the connection.
-     *
-     * @param string|null $username The username for the connection.
-     *
-     * @param string|null $password The password for the connection.
-     *
-     * @param array $options Driver-specific options for the connection.
-     *
-     * @param array $queries Queries to execute after the connection.
-     *
+     * @param string                                    $dsn      The data source name for the connection.
+     * @param string|null                               $username The username for the connection.
+     * @param string|null                               $password The password for the connection.
+     * @param array                                     $options  Driver-specific options for the connection.
+     * @param array                                     $queries  Queries to execute after the connection.
      * @param \Aura\Sql\Profiler\ProfilerInterface|null $profiler Tracks and logs query profiles.
      *
      * @see http://php.net/manual/en/pdo.construct.php
@@ -60,7 +47,7 @@ class ExtendedPdo extends AbstractExtendedPdo
         ?ProfilerInterface $profiler = null
     ) {
         // if no error mode is specified, use exceptions
-        if (! isset($options[PDO::ATTR_ERRMODE])) {
+        if (!isset($options[PDO::ATTR_ERRMODE])) {
             $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
         }
 
@@ -70,7 +57,7 @@ class ExtendedPdo extends AbstractExtendedPdo
             $username,
             $password,
             $options,
-            $queries
+            $queries,
         ];
 
         // retain a profiler, instantiating a default one if needed
@@ -86,10 +73,25 @@ class ExtendedPdo extends AbstractExtendedPdo
     }
 
     /**
+     * The purpose of this method is to hide sensitive data from stack traces.
      *
+     * @return array
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'args' => [
+                $this->args[0],
+                '****',
+                '****',
+                $this->args[3],
+                $this->args[4],
+            ],
+        ];
+    }
+
+    /**
      * Connects to the database.
-     *
-     * @return void
      */
     public function connect(): void
     {
@@ -110,11 +112,7 @@ class ExtendedPdo extends AbstractExtendedPdo
     }
 
     /**
-     *
      * Disconnects from the database.
-     *
-     * @return void
-     *
      */
     public function disconnect(): void
     {
@@ -124,35 +122,14 @@ class ExtendedPdo extends AbstractExtendedPdo
     }
 
     /**
-     *
-     * The purpose of this method is to hide sensitive data from stack traces.
-     *
-     * @return array
-     *
-     */
-    public function __debugInfo(): array
-    {
-        return [
-            'args' => [
-                $this->args[0],
-                '****',
-                '****',
-                $this->args[3],
-                $this->args[4],
-            ]
-        ];
-    }
-
-    /**
-     *
-     * Return the inner PDO (if any)
+     * Return the inner PDO (if any).
      *
      * @return \PDO
-     *
      */
     public function getPdo(): PDO
     {
         $this->connect();
+
         return $this->pdo;
     }
 }

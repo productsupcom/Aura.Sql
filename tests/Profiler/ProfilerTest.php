@@ -1,4 +1,5 @@
 <?php
+
 namespace Aura\Sql\Profiler;
 
 use PHPUnit\Framework\TestCase;

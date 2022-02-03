@@ -1,59 +1,44 @@
 <?php
 /**
- *
  * This file is part of Aura for PHP.
  *
  * @license https://opensource.org/licenses/MIT MIT
- *
  */
+
 namespace Aura\Sql;
 
 /**
- *
  * Manages ExtendedPdo instances for default, read, and write connections.
- *
- * @package Aura.Sql
- *
  */
 class ConnectionLocator implements ConnectionLocatorInterface
 {
     /**
-     *
      * A default ExtendedPdo connection factory/instance.
      *
      * @var callable
-     *
      */
     protected $default;
 
     /**
-     *
      * A registry of ExtendedPdo "read" factories/instances.
      *
      * @var array
-     *
      */
     protected array $read = [];
 
     /**
-     *
      * A registry of ExtendedPdo "write" factories/instances.
      *
      * @var array
-     *
      */
     protected array $write = [];
 
     /**
-     *
      * Constructor.
      *
      * @param callable|null $default A callable to create a default connection.
-     *
-     * @param array $read An array of callables to create read connections.
-     *
-     * @param array $write An array of callables to create write connections.
-     *
+     * @param array         $read    An array of callables to create read connections.
+     * @param array         $write   An array of callables to create write connections.
      */
     public function __construct(
         ?callable $default = null,
@@ -72,12 +57,9 @@ class ConnectionLocator implements ConnectionLocatorInterface
     }
 
     /**
-     *
      * Sets the default connection factory.
      *
      * @param callable $callable The factory for the connection.
-     *
-     * @return void
      */
     public function setDefault(callable $callable): void
     {
@@ -85,35 +67,30 @@ class ConnectionLocator implements ConnectionLocatorInterface
     }
 
     /**
-     *
      * Returns the default connection object.
      *
-     * @return ExtendedPdoInterface
-     *
      * @throws Exception\ConnectionNotFound
+     *
+     * @return ExtendedPdoInterface
      */
     public function getDefault(): ExtendedPdoInterface
     {
-        if (! $this->default) {
-            throw new Exception\ConnectionNotFound("default");
+        if (!$this->default) {
+            throw new Exception\ConnectionNotFound('default');
         }
 
-        if (! $this->default instanceof ExtendedPdo) {
-            $this->default = call_user_func($this->default);
+        if (!$this->default instanceof ExtendedPdo) {
+            $this->default = \call_user_func($this->default);
         }
 
         return $this->default;
     }
 
     /**
-     *
      * Sets a read connection factory by name.
      *
-     * @param string $name The name of the connection.
-     *
+     * @param string   $name     The name of the connection.
      * @param callable $callable The factory for the connection.
-     *
-     * @return void
      */
     public function setRead(string $name, callable $callable): void
     {
@@ -121,16 +98,15 @@ class ConnectionLocator implements ConnectionLocatorInterface
     }
 
     /**
-     *
      * Returns a read connection by name; if no name is given, picks a
      * random connection; if no read connections are present, returns the
      * default connection.
      *
      * @param string $name The read connection name to return.
      *
-     * @return ExtendedPdoInterface
-     *
      * @throws \Aura\Sql\Exception\ConnectionNotFound
+     *
+     * @return ExtendedPdoInterface
      */
     public function getRead(string $name = ''): ExtendedPdoInterface
     {
@@ -138,14 +114,10 @@ class ConnectionLocator implements ConnectionLocatorInterface
     }
 
     /**
-     *
      * Sets a write connection factory by name.
      *
-     * @param string $name The name of the connection.
-     *
+     * @param string   $name     The name of the connection.
      * @param callable $callable The factory for the connection.
-     *
-     * @return void
      */
     public function setWrite(string $name, callable $callable): void
     {
@@ -153,16 +125,15 @@ class ConnectionLocator implements ConnectionLocatorInterface
     }
 
     /**
-     *
      * Returns a write connection by name; if no name is given, picks a
      * random connection; if no write connections are present, returns the
      * default connection.
      *
      * @param string $name The write connection name to return.
      *
-     * @return ExtendedPdoInterface
-     *
      * @throws \Aura\Sql\Exception\ConnectionNotFound
+     *
+     * @return ExtendedPdoInterface
      */
     public function getWrite(string $name = ''): ExtendedPdoInterface
     {
@@ -170,17 +141,14 @@ class ConnectionLocator implements ConnectionLocatorInterface
     }
 
     /**
-     *
      * Returns a connection by name.
      *
      * @param string $type The connection type ('read' or 'write').
-     *
      * @param string $name The name of the connection.
-     *
-     * @return ExtendedPdoInterface
      *
      * @throws Exception\ConnectionNotFound
      *
+     * @return ExtendedPdoInterface
      */
     protected function getConnection(string $type, string $name): ExtendedPdoInterface
     {
@@ -194,12 +162,12 @@ class ConnectionLocator implements ConnectionLocatorInterface
             $name = array_rand($conn);
         }
 
-        if (! isset($conn[$name])) {
-            throw new Exception\ConnectionNotFound("$type:$name");
+        if (!isset($conn[$name])) {
+            throw new Exception\ConnectionNotFound("${type}:${name}");
         }
 
-        if (! $conn[$name] instanceof ExtendedPdo) {
-            $conn[$name] = call_user_func($conn[$name]);
+        if (!$conn[$name] instanceof ExtendedPdo) {
+            $conn[$name] = \call_user_func($conn[$name]);
         }
 
         return $conn[$name];
