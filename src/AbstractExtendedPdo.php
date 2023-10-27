@@ -87,7 +87,7 @@ abstract class AbstractExtendedPdo extends PDO implements ExtendedPdoInterface
 
         if (!method_exists($this->pdo, $name)) {
             $class = static::class;
-            $message = "Class '${class}' does not have a method '${name}'";
+            $message = "Class '{$class}' does not have a method '{$name}'";
 
             throw new BadMethodCallException($message);
         }
