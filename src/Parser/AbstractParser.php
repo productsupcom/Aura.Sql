@@ -223,7 +223,7 @@ abstract class AbstractParser implements ParserInterface
         // not an array, retain the placeholder for later
         $this->final_values[$name] = $this->values[$orig];
 
-        return ":${name}";
+        return ":{$name}";
     }
 
     /**
@@ -281,7 +281,7 @@ abstract class AbstractParser implements ParserInterface
         $split = implode('|', $this->split);
 
         return preg_split(
-            "/(${split})/um",
+            "/({$split})/um",
             $statement,
             -1,
             PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
